@@ -1,6 +1,6 @@
 type Props = {
 	title: string;
-	onClick: () => Promise<void>;
+	onClick: () => void;
 	isLogin?: boolean;
 	isLogout?: boolean;
 	isSignUp?: boolean;

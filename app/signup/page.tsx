@@ -1,23 +1,22 @@
 "use client";
 
 import Button from "@/components/shared/Button";
-import { FcGoogle } from "react-icons/fc";
-import { AiFillGithub } from "react-icons/ai";
+import useUser from "@/hooks/useUser";
 import Link from "next/link";
-import { useState } from "react";
-import { signIn, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import { AiFillGithub } from "react-icons/ai";
+import { FcGoogle } from "react-icons/fc";
 
-export default function Login() {
+type Props = {};
 
-	const { status, data } = useSession();
-	const router = useRouter();
-
-	console.log('CURRENT SESSION-> ',data);
-
+export default function Page({ }: Props) {
+    const { createUser } = useUser();
 	const [signUp, setSignUp] = useState({
 		email: "",
 		password: "",
+		confirmPassword: "",
+		username: "",
+		number: "",
 		isLoading: false,
 		error: null,
 	});
@@ -27,64 +26,61 @@ export default function Login() {
 		setSignUp({ ...signUp, [e.target.name]: e.target.value });
 	};
 
+    // ON SIGN UP HANDLER!
+    
 	return (
 		<>
 			<div className="flex flex-col justify-center items-center h-[100vh]">
-				<div className="flex flex-col min-w-[400px] gap-3 ">
+				<div className="flex flex-col min-w-[400px] gap-3 overflow-auto mt-14 ">
 					<div className=" text-center ">
-						<h1 className="lg:text-3xl font-bold text-[#272727]">Sign in</h1>
+						<h1 className="lg:text-3xl font-bold text-[#272727]">
+							Create an account
+						</h1>
 					</div>
 					<div className=" border-2 rounded-md px-4 py-6 flex flex-col gap-4  rounded-md">
 						<input
 							className="px-3 py-1  focus:placeholder:text-gray-500 focus:border-gray-600 outline-none focus:outline-none border-b border-gray-300 bg-inherit"
-							placeholder="email"
+							placeholder="username"
+							name="username"
 							onChange={stateChangeHandler}
-							value={signUp.email}
+                            value={signUp.username}
+						/>
+
+						<input
+							className="px-3 py-1  focus:placeholder:text-gray-500 focus:border-gray-600 outline-none focus:outline-none border-b border-gray-300 bg-inherit"
+							placeholder="email"
 							name="email"
+							onChange={stateChangeHandler}
+                            value={signUp.email}
+						/>
+						<input
+							className="px-3 py-1  focus:placeholder:text-gray-500 focus:border-gray-600 outline-none focus:outline-none border-b border-gray-300 bg-inherit"
+							placeholder="Mobile Number"
+							name="number"
+							onChange={stateChangeHandler}
+                            value={signUp.number}
 						/>
 						<input
 							className="px-3 py-1  focus:placeholder:text-gray-500 focus:border-gray-600 outline-none focus:outline-none border-b border-gray-300 bg-inherit"
 							placeholder="password"
-							onChange={stateChangeHandler}
-							value={signUp.password}
 							name="password"
+							onChange={stateChangeHandler}
+                            value={signUp.password}
 						/>
-						<p className="text-end">
-							<span className="text-sm text-gray-400">
-								<Link
-									href={"/"}
-									className="hover:underline hover:text-black
-								 text-gray-600 underline cursor-pointer"
-								>
-									Forgot Password ?
-								</Link>
-							</span>
-						</p>
 						<p className="text-center">
 							<span className="text-sm text-gray-400">
-								New Developer ?{" "}
+								Already account ?{" "}
 								<Link
-									href={"/signup"}
+									href={"/login"}
 									className="hover:underline hover:text-black
 								 text-gray-600 underline cursor-pointer"
 								>
-									create an account
+									Login
 								</Link>
 							</span>
 						</p>
 
-						<Button
-							title="Login"
-							isSignUp
-							onClick={async() => {
-								const success = await signIn("credentials", {
-									email: signUp.email,
-									password: signUp.password,
-									redirect: false,
-								});
-								success?.ok ? router.push('/') : null;
-							}}
-						/>
+						<Button title="Sign Up" isSignUp onClick={() => {createUser(signUp)}} />
 						{/* OR */}
 						<div className="w-full my-2">
 							<div className="flex items-center justify-between ">
