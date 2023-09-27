@@ -1,8 +1,10 @@
 import React from "react";
 
-type Props = {};
+type Props = {
+	user: any;
+};
 
-export default function CompanyMain({}: Props) {
+export default function CompanyMain({user}: Props) {
 	return (
 		<>
 			<div className="py-4 pl-2">

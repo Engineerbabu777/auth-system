@@ -4,28 +4,49 @@ import Button from "@/components/shared/Button";
 import { FcGoogle } from "react-icons/fc";
 import { AiFillGithub } from "react-icons/ai";
 import Link from "next/link";
-import { useState } from "react";
+import { createElement, useState } from "react";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import ErrorHandler from "@/components/Notifications/Error";
+import Success from "@/components/Notifications/Success";
 
 export default function Login() {
-
 	const { status, data } = useSession();
 	const router = useRouter();
 
-	console.log('CURRENT SESSION-> ',data);
+	console.log("CURRENT SESSION-> ", data);
 
 	const [signUp, setSignUp] = useState({
 		email: "",
 		password: "",
 		isLoading: false,
-		error: null,
+		error: "",
+		message: "",
 	});
 
 	// STATE HANDLER!
 	const stateChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setSignUp({ ...signUp, [e.target.name]: e.target.value });
 	};
+
+	if (signUp.error === "error") {
+		toast((t: any) =>
+			createElement(ErrorHandler, { t: t, message: signUp.message })
+		);
+		setSignUp({ ...signUp, error: "", message: "" });
+	}
+
+	if (signUp.error === "success") {
+		toast((t: any) =>
+			createElement(Success, {
+				t: t,
+				message: signUp.message,
+			})
+		);
+		setSignUp({ ...signUp, error: "", message: "" });
+		router.push("/");
+	}
 
 	return (
 		<>
@@ -76,13 +97,27 @@ export default function Login() {
 						<Button
 							title="Login"
 							isSignUp
-							onClick={async() => {
+							onClick={async () => {
 								const success = await signIn("credentials", {
 									email: signUp.email,
 									password: signUp.password,
 									redirect: false,
 								});
-								success?.ok ? router.push('/') : null;
+
+								if (success?.error) {
+									setSignUp({
+										...signUp,
+										error: "error",
+										message: success.error,
+									});
+								}
+								if (!success?.error) {
+									setSignUp({
+										...signUp,
+										error: "success",
+										message: "Authorization successful!",
+									});
+								}
 							}}
 						/>
 						{/* OR */}
@@ -95,6 +130,9 @@ export default function Login() {
 						</div>
 
 						<button
+							onClick={async () => {
+								await signIn("google", { callbackUrl: "/" });
+							}}
 							type="button"
 							className="border border-gray-400 rounded-md bg-gray-200 flex items-center justify-center gap-3 py-2 hover:bg-gradient-to-br hover:from-red-500/50 hover:to-blue-500/40 
 							"
@@ -105,6 +143,7 @@ export default function Login() {
 							<p>Login with Google</p>
 						</button>
 						<button
+							onClick={() => signIn("github", { callbackUrl: "/" })}
 							type="button"
 							className="border border-gray-400 rounded-md bg-gray-200 flex items-center justify-center gap-3 py-2 hover:bg-gradient-to-br hover:from-gray-50 hover:to-black/50"
 						>

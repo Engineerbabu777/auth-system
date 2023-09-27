@@ -6,17 +6,26 @@ import UserMain from "../UserInfo/UserMain";
 import CompanyMain from "../CompanyInfo/CompanyMain";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { ClipLoader } from "react-spinners";
 
-type Props = {};
+type Props = {
+	user:any
+};
 
-export default function MainPage({ }: Props) {
-	
+export default function MainPage({ user }: Props) {
 
 	const { status: sessionStatus, data: session } = useSession();
 	const router = useRouter();
 
 	if (sessionStatus === "loading") {
-		return 'loading session';
+		return (
+			<>
+				<div className="flex justify-center items-center flex-col gap-1">
+					<ClipLoader color={"#141E46"} size={70} />
+					<p className="text-lg text-[#141E46]">Loading content...</p>
+				</div>
+			</>
+		);
 	}
 
 	if (!session) {
@@ -32,12 +41,12 @@ export default function MainPage({ }: Props) {
 					<div className=" p-1 flex gap-4 lg:w-[70vw]">
 						{/* CHILD 0! */}
 						<CardComponent>
-							<UserMain />
+							<UserMain user={user} />
 						</CardComponent>
 
 						{/* CHILD 1! */}
 						<CardComponent big>
-							<CompanyMain />
+							<CompanyMain user={user} />
 						</CardComponent>
 					</div>
 				</>

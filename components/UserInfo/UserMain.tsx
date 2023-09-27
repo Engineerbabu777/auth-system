@@ -1,8 +1,13 @@
 import React from "react";
 
-type Props = {};
+type Props = {
+	user:any
+};
 
-export default function UserMain({}: Props) {
+export default function UserMain({ user }: Props) {
+
+	console.log('DATA IS HERE:',user)
+	
 	return (
 		<>
 			<div className="flex flex-col gap-1 mx-1 my-4">
@@ -13,8 +18,8 @@ export default function UserMain({}: Props) {
 
 				{/* NAME & POSITION! */}
 				<div className="flex flex-col">
-					<p className="text-[#272727] font-semibold text-md">Engineer Babu</p>
-					<p className="text-[#272727] text-sm font-[1rem]">CEO , EB Tech</p>
+					<p className="text-[#272727] font-semibold text-md">{user?.username || user?.name}</p>
+					<p className="text-[#272727] text-sm font-[1rem]">{user?.position || 'unknown'}</p>
 				</div>
 
 				{/* TEL & EMAIL */}
@@ -25,7 +30,7 @@ export default function UserMain({}: Props) {
 
 						{/* TEXT */}
 						<span className="font-semibold text-sm text-black ml-1">
-							Tel: 956 046 396
+							Tel: {user?.number || 'unknown'}
 						</span>
 					</p>
 					<p className="text-[#272727]  flex gap-2 items-center">
@@ -34,7 +39,7 @@ export default function UserMain({}: Props) {
 
 						{/* TEXT */}
 						<span className="font-semibold text-sm ">
-							Email:&nbsp;babubhai001@gmail.com
+							Email:&nbsp;{user?.email}
 						</span>
 					</p>
 				</div>
