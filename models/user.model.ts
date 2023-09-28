@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
-		imageUrl: {
+		image: {
 			default: null,
 			type: String,
 		},
@@ -27,10 +27,9 @@ const userSchema = new mongoose.Schema(
 		},
 		position: {
 			type: String,
-			required: true,
 		},
 		company: {
-			type: mongoose.Types.ObjectId,
+			type: mongoose.Schema.ObjectId,
 			ref: "company",
 		},
 	},
@@ -40,4 +39,4 @@ const userSchema = new mongoose.Schema(
 );
 
 export const userModel =
-	mongoose.models.user || mongoose.model("user", userSchema);
+	mongoose?.models?.user || mongoose.model("user", userSchema);

@@ -27,7 +27,7 @@ const passwordValidator = (password: String) => {
 }
 
 
-export const userValidator = (user:User) => {
+export const userValidator = (user:any) => {
     // CHECK FOR EMPTY FIELD!
     if (!user.email || !user.password || !user.username || !user.number) {
         throw new Error("Please fill in all fields!");

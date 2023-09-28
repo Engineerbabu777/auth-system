@@ -18,6 +18,10 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 	}) {
+
+	const user = await getCurrentUser();
+
+	console.log('From-> root: ',user)
 	
   return (
 		<html lang="en">

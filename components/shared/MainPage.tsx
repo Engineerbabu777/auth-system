@@ -17,6 +17,8 @@ export default function MainPage({ user }: Props) {
 	const { status: sessionStatus, data: session } = useSession();
 	const router = useRouter();
 
+	
+
 	if (sessionStatus === "loading") {
 		return (
 			<>

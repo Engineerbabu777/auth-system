@@ -1,4 +1,5 @@
 import { newUserServerActionFunction } from "@/actions/registration";
+import { updateUserAction } from "@/actions/updateUser";
 import ErrorHandler from "@/components/Notifications/Error";
 import Success from "@/components/Notifications/Success";
 import { User } from "@/types/newUser";
@@ -41,10 +42,46 @@ export default function useUser() {
 	};
 
 	// EDIT USER!
+	const updateUser = async (setMode: any, user: any) => {
+		const userObject = {
+			email: user.email,
+			username: user.username,
+			number: user.number,
+			password: "testpassword",
+			isLoading: false,
+		};
+
+		// VALIDATE DATA!
+		userValidator(userObject);
+
+		// AFTER VALIDATION MAKE API CALL!
+		const result = await updateUserAction(user);
+
+		// IF SOME ERROR HAPPEN!
+		if (result.failed) {
+			toast((t: any) =>
+				createElement(ErrorHandler, { t: t, message: result.message })
+			);
+			return;
+		}
+
+		if (result.success) {
+			toast((t: any) =>
+				createElement(Success, {
+					t: t,
+					message: result.message,
+				})
+			);
+			setMode("view");
+			return;
+		}
+
+		// AFTER SUCCESS SET-MODE TO VIEW MODE!
+	};
 
 	// DELETE USERS!
 
 	// GET USER!
 
-	return { createUser };
+	return { createUser, updateUser };
 }
