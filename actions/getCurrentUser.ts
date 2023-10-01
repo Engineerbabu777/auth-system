@@ -39,9 +39,11 @@ export async function getCurrentUser() {
 			password: _doc?.password || null,
 			//POSITION!
 			position: _doc?.position || null,
-            //IMAGE!
-            image: _doc?.image || null,
+			//IMAGE!
+			image: _doc?.image || null,
 			_id: _doc?._id,
+			// EMAIL VERIFICATION!
+			isVerified: _doc?.isVerified || false,
 		};
 	} catch (error: any) {
 		return null;

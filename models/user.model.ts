@@ -32,6 +32,14 @@ const userSchema = new mongoose.Schema(
 			type: mongoose.Schema.ObjectId,
 			ref: "company",
 		},
+		forgotPasswordToken: String,
+		forgotPasswordTokenExpiry: Date,
+		verifyToken: String,
+		verifyTokenExpiry: Date,
+		isVerified: {
+			type: Boolean,
+			default: false,
+		},
 	},
 	{
 		timestamps: true,
