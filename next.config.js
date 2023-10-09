@@ -1,8 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    experimental: {
-        serverActions:true,
-    }
+  experimental: {
+    serverActions: true,
+    swcPlugins: ['next-superjson-plugin', {}],
+  }
 }
 
 module.exports = nextConfig

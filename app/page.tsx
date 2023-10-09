@@ -1,10 +1,32 @@
+'use client';
+
 import { getCurrentUser } from "@/actions/getCurrentUser";
+import getLoggedUser from "@/actions/getLoggedUser";
 import HeaderMain from "@/components/header/HeaderMain";
 import MainPage from "@/components/shared/MainPage";
+import { useEffect, useMemo, useState } from "react";
 
-export default async function Home() {
+export default function Home() {
 
-	const user = await getCurrentUser();
+	// const user = await getCurrentUser();
+	const [user, setUser]= useState(null);
+
+	const getUser = useMemo(async() => {
+		const user = await getCurrentUser();
+		return user;
+	},[]);
+
+	const getData = async() => {
+		const data = await getUser;
+
+		console.log('DATA-> ',data)
+	}
+
+	useEffect(() => {
+		getData();
+	},[]);
+
+	console.log('LOGGED USER-> ',user);
 
 	console.log(user);
 
